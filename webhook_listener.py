@@ -23,9 +23,12 @@ def webhook():
     payload = request.get_data()
     signature = request.headers.get('X-Hub-Signature-256')
 
+    print(f"Payload: {payload}")  # Debugging payload
+    print(f"Signature: {signature}")  # Debugging signature
+
     # Verify webhook signature
     if not verify_signature(payload, signature):
-        return jsonify({'error': 'Invalid signature'}), 403
+        return jsonify({'error': 'Invalid or missing signature'}), 403
 
     event_type = request.headers.get('X-GitHub-Event')
 

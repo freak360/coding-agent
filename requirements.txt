@@ -1,6 +1,6 @@
 flask
 openai
-gitpython
 pytest
 python-dotenv
 pyngrok
+GitPython

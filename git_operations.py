@@ -1,4 +1,3 @@
-# git_operations.py
 import git
 import os
 

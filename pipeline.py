@@ -18,6 +18,7 @@ def run_pipeline(prompt):
     # Step 1: Generate code using OpenAI API
     print("Generating code...")
     code = generate_code(prompt)
+    print('Response: ', code)
     save_code_to_file(code)
 
     # Step 2: Run tests
