@@ -22,6 +22,7 @@ Installation and Setup
 First, clone the repository locally:
 
 '''bash
+
 git clone https://github.com/your-username/coding-agent.git
 cd coding-agent
 '''
