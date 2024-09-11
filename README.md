@@ -128,21 +128,22 @@ json
 
 **This payload includes:**
 
-**ref:** Specifies the branch (refs/heads/main).
-**repository:** Contains the repository name and URL.
-**pusher:** Information about the person who triggered the event.
-**token:** Must match the WEBHOOK_SECRET in your .env file.
+1. **ref:** Specifies the branch (refs/heads/main).
+2. **repository:** Contains the repository name and URL.
+3. **pusher:** Information about the person who triggered the event.
+4. **token:** Must match the WEBHOOK_SECRET in your .env file.
 
-**Token Validation:**
+## **Token Validation:**
 The token in the payload must match the secret provided in the .env file for the webhook to process the request.
 Functionality:
 
-**Current Functionality:** This project currently generates a Python function to calculate the sum of two numbers. You can modify the prompt in the code to generate other functions.
+## **Current Functionality:** 
+This project currently generates a Python function to calculate the sum of two numbers. You can modify the prompt in the code to generate other functions.
 
-**Environment Setup:**
+## **Environment Setup:**
 Ensure all necessary environment variables are correctly set in the .env file before running the project.
 
-**Dependencies**
+## **Dependencies**
 All required dependencies are listed in the requirements.txt file. To install them, run:
 
 ```bash
