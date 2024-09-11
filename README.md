@@ -50,27 +50,25 @@ Create a .env file and provide the secret that can be obtained by contacting me:
 WEBHOOK_SECRET=c1f4171e7270316e85495432d77554ea95307290
 ```
 
-# OpenAI API key for generating code
+**OpenAI API key for generating code**
+```bash
 OPENAI_API_KEY=your_openai_api_key
+```
 
-# GitHub repository URL where the generated code will be pushed
+**GitHub repository URL where the generated code will be pushed**
+```bash
 NEW_REPO_URL=https://github.com/your-username/generated-code-repo.git
+```
 
-# Local path where the repo will be cloned and code will be generated
+**Local path where the repo will be cloned and code will be generated**
 ```bash
 LOCAL_REPO_PATH=D:/projects/generated_repo
-WEBHOOK_SECRET: Secret key to verify incoming webhook payloads. This must be provided by the repository owner.
-OPENAI_API_KEY: Your OpenAI API key for generating code using GPT-4.
-NEW_REPO_URL: The URL of the repository where you want the generated code to be pushed.
-LOCAL_REPO_PATH: Local directory where the generated code is stored.
-Webhook Setup
 ```
 
 **Go to your GitHub Repository Settings:**
 
 Navigate to Settings > Webhooks.
 Create a Webhook:
-
 Payload URL: Set this to the URL where your Flask app will be listening (e.g., using ngrok).
 Content Type: Select application/json.
 Secret: Use the value from your .env file's WEBHOOK_SECRET (e.g., c1f4171e7270316e85495432d77554ea95307290).
