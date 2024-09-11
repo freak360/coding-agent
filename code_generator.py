@@ -34,8 +34,8 @@ def save_code_to_file(code, filename='generated_code.py'):
         f.write(code)
     print(f"Code saved to {filename}")
 
-if __name__ == "__main__":
-    # Example prompt
-    prompt = "Write a Python function that calculates the sum of two numbers."
-    code = generate_code(prompt)
-    save_code_to_file(code)
+# if __name__ == "__main__":
+#     # Example prompt
+#     prompt = "Write a Python function that calculates the sum of two numbers."
+#     code = generate_code(prompt)
+#     save_code_to_file(code)

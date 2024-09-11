@@ -2,6 +2,16 @@
 import subprocess
 from code_generator import generate_code, save_code_to_file
 from git_operations import commit_and_push_changes
+from openai import OpenAI
+import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
+
+# OpenAI API setup
+api_key = os.getenv("OPENAI_API_KEY")
+client = OpenAI(api_key=api_key)
 
 def run_tests():
     """
