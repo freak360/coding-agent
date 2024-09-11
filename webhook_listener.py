@@ -30,7 +30,7 @@ def webhook():
 # Handle the push event from GitHub
 def handle_push_event():
     print("Push event received, generating and testing code...")
-    prompt = "Write a Python function that calculates the sum of two numbers."
+    prompt = "Write a Python function that calculates the sum of two numbers. Please only return the code don't write anything else in your response but just the code."
     run_pipeline(prompt)
 
 # Handle the pull request event

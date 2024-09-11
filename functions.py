@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 from openai import OpenAI
 import hmac
 import hashlib
+import re
 
 # Load environment variables from .env file
 load_dotenv()
@@ -31,7 +32,15 @@ def generate_code(prompt):
             ]
         )
         generated_code = completion.choices[0].message.content
-        return generated_code.strip()
+        # Use a regular expression to extract the code block
+        code_match = re.search(r'```(?:python)?(.*?)```', generated_code, re.DOTALL)
+        if code_match:
+            code = code_match.group(1).strip()
+        else:
+            # If no code block is found, assume the entire response is code
+            code = generated_code.strip()
+
+        return code
     except Exception as e:
         print(f"Error while generating code: {str(e)}")
         return e
@@ -43,14 +52,24 @@ def save_code_to_file(code, filename='generated_code.py'):
     print(f"Code saved to {filename}")
 
 # Commit and push code changes to the repository
-def commit_and_push_changes(repo_dir, commit_message="Auto-generated code commit"):
+def commit_and_push_changes(commit_message="Auto-generated code commit"):
     try:
+        # Use the current working directory as the repository
+        repo_dir = os.getcwd()
+        
+        # Load the repository
         repo = git.Repo(repo_dir)
+        
+        # Stage all changes
         repo.git.add(all=True)
+        
+        # Commit changes
         repo.index.commit(commit_message)
+        
+        # Push to the remote repository (assuming 'origin' is the remote)
         origin = repo.remote(name='origin')
         origin.push()
-        print("Changes pushed to remote repository.")
+        print("Changes pushed to the remote repository.")
     except Exception as e:
         print(f"Error while pushing to Git: {str(e)}")
 
@@ -68,7 +87,7 @@ def verify_signature(data, signature):
     return hmac.compare_digest('sha256=' + mac.hexdigest(), signature)
 
 # Main pipeline to handle code generation, testing, and pushing
-def run_pipeline(prompt, repo_dir='./dummy_repo'):
+def run_pipeline(prompt):
     print("Generating code...")
     code = generate_code(prompt)
     save_code_to_file(code)
@@ -76,6 +95,6 @@ def run_pipeline(prompt, repo_dir='./dummy_repo'):
     print("Running tests...")
     if run_tests():
         print("All tests passed. Committing and pushing changes.")
-        commit_and_push_changes(repo_dir=repo_dir, commit_message="Automated code generation and testing")
+        commit_and_push_changes(commit_message="Automated code generation and testing")
     else:
         print("Tests failed. Aborting commit.")
