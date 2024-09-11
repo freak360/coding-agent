@@ -3,54 +3,52 @@ This project demonstrates how to use a webhook to trigger automated code generat
 
 This code currently generates a function to calculate the sum of two numbers only, but it can be modified for other purposes.
 
-**Project Overview**
+## **Project Overview**
 The Coding Agent project automates the code generation, testing, and deployment process via GitHub Webhooks. Once a webhook event is triggered, the following steps are executed:
-
-Generate code using OpenAI's GPT-4 to create a Python function that calculates the sum of two numbers.
-Test the code with Pytest.
-Push the code to a separate repository if all tests pass.
+1. Generate code using OpenAI's GPT-4 to create a Python function that calculates the sum of two numbers.
+2. Test the code with Pytest.
+3. Push the code to a separate repository if all tests pass.
 This project can be expanded to generate and test other functions as well by modifying the OpenAI prompt.
 
-**Key Features**
-Webhook Integration: Responds to GitHub push and pull request events.
-Code Generation: Automatically generates Python code using GPT-4 based on predefined prompts.
-Automated Testing: Uses Pytest to validate generated code.
-Git Operations: Automatically commits and pushes code to a specified GitHub repository.
-Installation and Setup
+## **Key Features**
+**Webhook Integration:** Responds to GitHub push and pull request events.
+**Code Generation:** Automatically generates Python code using GPT-4 based on predefined prompts.
+**Automated Testing:** Uses Pytest to validate generated code.
+**Git Operations:** Automatically commits and pushes code to a specified GitHub repository.
+
+## Installation and Setup
 
 **1. Clone the Repository**
 First, clone the repository locally:
 
-'''bash
-
+```bash
 git clone https://github.com/your-username/coding-agent.git
 cd coding-agent
-
-'''
+```
 
 **2. Set Up the Virtual Environment**
 Create and activate a Python virtual environment:
 
-'''bash
+```bash
 python -m venv venv
 source venv/bin/activate  # For Windows: venv\Scripts\activate
-'''
+```
 
 **3. Install Required Dependencies**
 Install the dependencies listed in the requirements.txt:
-'''bash
+```bash
 pip install -r requirements.txt
-'''
+```
 
 **4. Configuration**
 To configure the project, create a .env file in the root directory with the required environment variables.
 .env File
 Create a .env file and provide the secret that can be obtained by contacting me:
 
-'''bash
+```bash
 # Example Webhook secret for validating the payload token (must match what is set in GitHub)
 WEBHOOK_SECRET=c1f4171e7270316e85495432d77554ea95307290
-'''
+```
 
 # OpenAI API key for generating code
 OPENAI_API_KEY=your_openai_api_key
@@ -59,14 +57,16 @@ OPENAI_API_KEY=your_openai_api_key
 NEW_REPO_URL=https://github.com/your-username/generated-code-repo.git
 
 # Local path where the repo will be cloned and code will be generated
+```bash
 LOCAL_REPO_PATH=D:/projects/generated_repo
 WEBHOOK_SECRET: Secret key to verify incoming webhook payloads. This must be provided by the repository owner.
 OPENAI_API_KEY: Your OpenAI API key for generating code using GPT-4.
 NEW_REPO_URL: The URL of the repository where you want the generated code to be pushed.
 LOCAL_REPO_PATH: Local directory where the generated code is stored.
 Webhook Setup
+```
 
-Go to your GitHub Repository Settings:
+**Go to your GitHub Repository Settings:**
 
 Navigate to Settings > Webhooks.
 Create a Webhook:
@@ -76,9 +76,9 @@ Content Type: Select application/json.
 Secret: Use the value from your .env file's WEBHOOK_SECRET (e.g., c1f4171e7270316e85495432d77554ea95307290).
 **Ngrok Setup (Optional):** If you're testing locally, you can use ngrok to expose your local server to the internet:
 
-'''bash
+```bash
 ngrok http 5000
-'''
+```
 Use the generated ngrok URL as the Payload URL in the webhook settings.
 
 **Usage Guide**
@@ -86,9 +86,9 @@ Start the Flask Webhook Listener
 
 Start the Flask app to listen for incoming webhook events:
 
-'''bash
+```bash
 python webhook_listener.py
-'''
+```
 
 This will start the webhook listener on http://127.0.0.1:5000. If using ngrok, use the provided public URL.
 
@@ -111,7 +111,7 @@ token: Secret token matching the value stored in .env (WEBHOOK_SECRET).
 Here is a sample dummy payload that could be sent to the webhook:
 
 json
-'''bash
+```bash
 {
   "ref": "refs/heads/main",
   "before": "abc123",
@@ -126,38 +126,37 @@ json
   },
   "token": "c1f4171e7270316e84495432d77554ea95307290"
 }
-'''
+```
 
 **This payload includes:**
 
-ref: Specifies the branch (refs/heads/main).
-repository: Contains the repository name and URL.
-pusher: Information about the person who triggered the event.
-token: Must match the WEBHOOK_SECRET in your .env file.
-Important Notes
-Webhook Secret:
+**ref:** Specifies the branch (refs/heads/main).
+**repository:** Contains the repository name and URL.
+**pusher:** Information about the person who triggered the event.
+**token:** Must match the WEBHOOK_SECRET in your .env file.
 
-DO NOT SHARE YOUR WEBHOOK SECRET. It is used to verify the authenticity of incoming webhook requests. Only requests with the correct token will be processed.
 **Token Validation:**
-
 The token in the payload must match the secret provided in the .env file for the webhook to process the request.
 Functionality:
 
 **Current Functionality:** This project currently generates a Python function to calculate the sum of two numbers. You can modify the prompt in the code to generate other functions.
-Environment Setup:
 
+**Environment Setup:**
 Ensure all necessary environment variables are correctly set in the .env file before running the project.
-Dependencies
+
+**Dependencies**
 All required dependencies are listed in the requirements.txt file. To install them, run:
 
-'''bash
+```bash
 pip install -r requirements.txt
-'''
-**List of Dependencies:**
-flask: For setting up the webhook listener.
-openai: To interact with the OpenAI API for code generation.
-pytest: To run automated tests on the generated code.
-python-dotenv: For loading environment variables from the .env file.
-pyngrok: For exposing the local server to the internet (if needed).
-GitPython: For handling Git operations (commit, push, etc.).
+```
+
+## **List of Dependencies:**
+**flask:** For setting up the webhook listener.
+**openai:** To interact with the OpenAI API for code generation.
+**pytest:** To run automated tests on the generated code.
+**python-dotenv:** For loading environment variables from the .env file.
+**pyngrok:** For exposing the local server to the internet (if needed).
+**GitPython:** For handling Git operations (commit, push, etc.).
+
 That’s it! You’re now ready to use the Coding Agent project. Feel free to modify or expand its functionality as per your requirements.
