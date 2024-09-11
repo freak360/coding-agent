@@ -90,22 +90,22 @@ python webhook_listener.py
 
 This will start the webhook listener on http://127.0.0.1:5000. If using ngrok, use the provided public URL.
 
-Triggering the Webhook
+## Triggering the Webhook
 
 When a push or pull request is made to the GitHub repository that has the webhook configured, it will trigger the following pipeline:
+1. **Generate Code:** GPT-4 generates Python code based on a prompt.
+2. **Test Code:** The generated code is automatically tested using Pytest.
+3. **Push Code:**If the tests pass, the code is committed and pushed to the separate repository specified in the .env file.
+4. **Payload Structure:** To trigger the webhook, GitHub sends a JSON payload. Only specific fields are necessary for the webhook to function.
 
-**Generate Code:** GPT-4 generates Python code based on a prompt.
-**Test Code:** The generated code is automatically tested using Pytest.
-**Push Code:**If the tests pass, the code is committed and pushed to the separate repository specified in the .env file.
-**Payload Structure**
-To trigger the webhook, GitHub sends a JSON payload. Only specific fields are necessary for the webhook to function.
 
-Important Fields:
-ref: Branch reference (e.g., refs/heads/main).
-repository: Contains repository details like name and URL.
-pusher: The individual who triggered the event (name and email).
-token: Secret token matching the value stored in .env (WEBHOOK_SECRET).
 **Dummy Payload Example:**
+While using the postman to test this api you should set head to:
+```bash
+X-GitHub-Event: push or pull_request
+Content-Type: application/json
+```
+
 Here is a sample dummy payload that could be sent to the webhook:
 
 json
