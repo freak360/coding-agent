@@ -44,7 +44,7 @@ def handle_push_event():
 # Handle the pull request event
 def handle_pull_request_event():
     print("Pull request event received, generating code...")
-    prompt = "Write a Python function that calculates the sum of two numbers."
+    prompt = "Write a Python function that calculates the sum of two numbers. Make sure the name of the function should be sum_two_numbers() and there should not be anything else rather than the code in your response."
     run_pipeline(prompt)
 
 if __name__ == '__main__':

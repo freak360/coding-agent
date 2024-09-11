@@ -4,8 +4,7 @@ import subprocess
 import json
 from dotenv import load_dotenv
 from openai import OpenAI
-import hmac
-import hashlib
+import shutil
 import re
 
 # Load environment variables from .env file
@@ -48,31 +47,52 @@ def generate_code(prompt):
 
 # Save the generated code to a file
 def save_code_to_file(code, filename='generated_code.py'):
-    with open(filename, 'w') as f:
+    file_path = os.path.join(LOCAL_REPO_PATH, filename)
+    
+    # Ensure the directory exists
+    if not os.path.exists(LOCAL_REPO_PATH):
+        os.makedirs(LOCAL_REPO_PATH)
+    
+    with open(file_path, 'w') as f:
         f.write(code)
-    print(f"Code saved to {filename}")
+    print(f"Code saved to {file_path}")
 
-# Commit and push code changes to the repository
+# Define the repository URL for the separate repo where generated code will be pushed
+NEW_REPO_URL = 'https://github.com/freak360/dummy.git'
+LOCAL_REPO_PATH = 'D:/projects/generated_repo'  # Directory where the separate repo will be cloned
+
+# Commit and push code changes to the separate repository
 def commit_and_push_changes(commit_message="Auto-generated code commit"):
     try:
-        # Use the current working directory as the repository
-        repo_dir = os.getcwd()
-        
-        # Load the repository
-        repo = git.Repo(repo_dir)
-        
-        # Stage all changes
+        # Check if the repository is already cloned and valid
+        if not os.path.exists(os.path.join(LOCAL_REPO_PATH, ".git")):
+            if os.listdir(LOCAL_REPO_PATH):
+                print(f"Directory {LOCAL_REPO_PATH} is not empty but doesn't contain a Git repository. Clearing directory...")
+                shutil.rmtree(LOCAL_REPO_PATH)  # Clear the directory if it's not empty and not a Git repository
+                os.makedirs(LOCAL_REPO_PATH)  # Recreate the directory
+            print(f"Cloning repository from {NEW_REPO_URL} to {LOCAL_REPO_PATH}...")
+            git.Repo.clone_from(NEW_REPO_URL, LOCAL_REPO_PATH)
+        else:
+            print(f"Repository already exists at {LOCAL_REPO_PATH}. Pulling latest changes...")
+            repo = git.Repo(LOCAL_REPO_PATH)
+            origin = repo.remote(name='origin')
+            origin.pull()
+
+        # Load the repository from the local path
+        repo = git.Repo(LOCAL_REPO_PATH)
+
+        # Stage all changes (we assume generated code is saved to this repo)
         repo.git.add(all=True)
-        
+
         # Commit changes
         repo.index.commit(commit_message)
-        
+
         # Push to the remote repository (assuming 'origin' is the remote)
         origin = repo.remote(name='origin')
         origin.push()
-        print("Changes pushed to the remote repository.")
+        print("Changes pushed to the separate repository.")
     except Exception as e:
-        print(f"Error while pushing to Git: {str(e)}")
+        print(f"Error while pushing to the separate Git repository: {str(e)}")
 
 # Run tests using Pytest
 def run_tests():
@@ -108,7 +128,7 @@ def run_pipeline(prompt):
 
     print("Running tests...")
     if run_tests():
-        print("All tests passed. Committing and pushing changes.")
+        print("All tests passed. Committing and pushing changes to separate repository.")
         commit_and_push_changes(commit_message="Automated code generation and testing")
     else:
         print("Tests failed. Aborting commit.")

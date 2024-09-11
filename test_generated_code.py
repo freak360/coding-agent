@@ -5,13 +5,13 @@ import pytest
 import importlib.util
 import os
 
-spec = importlib.util.spec_from_file_location("generated_code", "./generated_code.py")
+spec = importlib.util.spec_from_file_location("generated_code", "D:/projects/generated_repo/generated_code.py")
 generated_code = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(generated_code)
 
 def test_sum_function():
     # Load the generated code dynamically from the 'generated_code.py' file
-    generated_code_file = './generated_code.py'
+    generated_code_file = 'D:/projects/generated_repo/generated_code.py'
 
     # Check if the file exists
     assert os.path.exists(generated_code_file), "Generated code file does not exist."
