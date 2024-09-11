@@ -1,14 +1,14 @@
 # code_generator.py
 from openai import OpenAI
 import os
-# from dotenv import load_dotenv
+from dotenv import load_dotenv
 
 # Load environment variables from .env file
-# load_dotenv()
+load_dotenv()
 
-# # OpenAI API setup
-# api_key = os.getenv("OPENAI_API_KEY")
-client = OpenAI(api_key='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')
+# OpenAI API setup
+api_key = os.getenv("OPENAI_API_KEY")
+client = OpenAI(api_key=api_key)
 
 def generate_code(prompt):
     """
