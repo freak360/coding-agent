@@ -1,36 +1,44 @@
-# webhook_listener.py
 from flask import Flask, request, jsonify
-from functions import verify_signature, run_pipeline
+from functions import verify_token, run_pipeline
 import os
 
 app = Flask(__name__)
 
 @app.route('/webhook', methods=['POST'])
 def webhook():
+    # Get the raw payload from the request
     payload = request.get_data()
-    signature = request.headers.get('X-Hub-Signature-256')
 
-    # Debugging output
-    print(f"Payload: {payload}")
-    print(f"Signature: {signature}")
+    # Validate the token in the payload
+    if not verify_token(payload):
+        return jsonify({'error': 'Invalid token'}), 403
 
-    # Verify the webhook signature
-    if not verify_signature(payload, signature):
-        return jsonify({'error': 'Invalid or missing signature'}), 403
+    # Print a success message once the token is validated
+    print("Token validated successfully. Webhook event processing...")
 
+    # Get the event type (push, pull_request, etc.)
     event_type = request.headers.get('X-GitHub-Event')
 
+    # Check if the event type is missing
+    if not event_type:
+        print("No GitHub event type found in headers.")
+        return jsonify({'error': 'No event type provided'}), 400
+
+    # Handle different event types
     if event_type == 'push':
         handle_push_event()
     elif event_type == 'pull_request':
         handle_pull_request_event()
+    else:
+        print(f"Unhandled event type: {event_type}")
+        return jsonify({'error': f'Unhandled event type: {event_type}'}), 400
 
     return jsonify({'status': 'ok'}), 200
 
 # Handle the push event from GitHub
 def handle_push_event():
     print("Push event received, generating and testing code...")
-    prompt = "Write a Python function that calculates the sum of two numbers. Please only return the code don't write anything else in your response but just the code."
+    prompt = "Write a Python function that calculates the sum of two numbers. Please only return the code, don't write anything else in your response but just the code."
     run_pipeline(prompt)
 
 # Handle the pull request event

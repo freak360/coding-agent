@@ -1,6 +1,7 @@
 import git
 import os
 import subprocess
+import json
 from dotenv import load_dotenv
 from openai import OpenAI
 import hmac
@@ -10,7 +11,7 @@ import re
 # Load environment variables from .env file
 load_dotenv()
 
-WEBHOOK_SECRET = os.getenv("WEBHOOK_SECRET")
+WEBHOOK_SECRET_TOKEN = os.getenv("WEBHOOK_SECRET")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 # OpenAI API setup
@@ -79,12 +80,25 @@ def run_tests():
     print(result.stdout)
     return result.returncode == 0
 
-# Verify the webhook signature from GitHub
-def verify_signature(data, signature):
-    if signature is None:
+# Simplified token verification, without signature validation
+def verify_token(data):
+    try:
+        # Parse the payload and check if the token matches the expected token
+        payload = json.loads(data)
+        print(f"Token in payload: {payload.get('token')}")
+        print(f"Expected token: {WEBHOOK_SECRET_TOKEN}")
+        
+        # Validate the token in the payload
+        if 'token' not in payload or payload['token'] != WEBHOOK_SECRET_TOKEN:
+            print("Token mismatch or token not provided in the payload.")
+            return False
+    except Exception as e:
+        print(f"Error processing the payload: {str(e)}")
         return False
-    mac = hmac.new(bytes(WEBHOOK_SECRET, 'utf-8'), msg=data, digestmod=hashlib.sha256)
-    return hmac.compare_digest('sha256=' + mac.hexdigest(), signature)
+
+    # If the token matches, proceed with the request
+    print("Token verified successfully.")
+    return True
 
 # Main pipeline to handle code generation, testing, and pushing
 def run_pipeline(prompt):
