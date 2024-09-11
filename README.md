@@ -67,11 +67,11 @@ LOCAL_REPO_PATH=D:/projects/generated_repo
 
 **Go to your GitHub Repository Settings:**
 
-Navigate to Settings > Webhooks.
-Create a Webhook:
-Payload URL: Set this to the URL where your Flask app will be listening (e.g., using ngrok).
-Content Type: Select application/json.
-Secret: Use the value from your .env file's WEBHOOK_SECRET (e.g., c1f4171e7270316e85495432d77554ea95307290).
+1. Navigate to Settings > Webhooks.
+2. Create a Webhook:
+3. Payload URL: Set this to the URL where your Flask app will be listening (e.g., using ngrok).
+4. Content Type: Select application/json.
+5. Secret: Use the value from your .env file's WEBHOOK_SECRET (e.g., c1f4171e7270316e85485432d77554ea95307290).
 **Ngrok Setup (Optional):** If you're testing locally, you can use ngrok to expose your local server to the internet:
 
 ```bash
@@ -150,11 +150,11 @@ pip install -r requirements.txt
 ```
 
 ## **List of Dependencies:**
-**flask:** For setting up the webhook listener.
-**openai:** To interact with the OpenAI API for code generation.
-**pytest:** To run automated tests on the generated code.
-**python-dotenv:** For loading environment variables from the .env file.
-**pyngrok:** For exposing the local server to the internet (if needed).
-**GitPython:** For handling Git operations (commit, push, etc.).
+1. **flask:** For setting up the webhook listener.
+2. **openai:** To interact with the OpenAI API for code generation.
+3. **pytest:** To run automated tests on the generated code.
+4. **python-dotenv:** For loading environment variables from the .env file.
+5. **pyngrok:** For exposing the local server to the internet (if needed).
+6. **GitPython:** For handling Git operations (commit, push, etc.).
 
 That’s it! You’re now ready to use the Coding Agent project. Feel free to modify or expand its functionality as per your requirements.
