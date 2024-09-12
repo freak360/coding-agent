@@ -11,10 +11,10 @@ The Coding Agent project automates the code generation, testing, and deployment 
 This project can be expanded to generate and test other functions as well by modifying the OpenAI prompt.
 
 ## **Key Features**
-**Webhook Integration:** Responds to GitHub push and pull request events.
-**Code Generation:** Automatically generates Python code using GPT-4 based on predefined prompts.
-**Automated Testing:** Uses Pytest to validate generated code.
-**Git Operations:** Automatically commits and pushes code to a specified GitHub repository.
+1. **Webhook Integration:** Responds to GitHub push and pull request events.
+2. **Code Generation:** Automatically generates Python code using GPT-4 based on predefined prompts.
+3. **Automated Testing:** Uses Pytest to validate generated code.
+4. **Git Operations:** Automatically commits and pushes code to a specified GitHub repository.
 
 ## Installation and Setup
 
@@ -71,8 +71,8 @@ LOCAL_REPO_PATH=D:/projects/generated_repo
 2. Create a Webhook:
 3. Payload URL: Set this to the URL where your Flask app will be listening (e.g., using ngrok).
 4. Content Type: Select application/json.
-5. Secret: Use the value from your .env file's WEBHOOK_SECRET (e.g., c1f4171e7270316e85485432d77554ea95307290).
-**Ngrok Setup (Optional):** If you're testing locally, you can use ngrok to expose your local server to the internet:
+5. Secret: Use the value from your .env file's WEBHOOK_SECRET (e.g., c1f4171e7270316e85495432d77554ea95307290).
+6. **Ngrok Setup (Optional):** If you're testing locally, you can use ngrok to expose your local server to the internet:
 
 ```bash
 ngrok http 5000
